@@ -8,26 +8,23 @@ Now that you've installed Docker have seen how it works, we'll get started by cr
 4. Copy and paste the following into it:
 
 ```Dockerfile
-# Use an official Python runtime as a parent image
-FROM python:3.7
+# Use Java distribution from Docker
+FROM openjdk:11-jdk
 
-# Set the working directory to /app
+# Temporary data storage used by data services like Redis
+VOLUME /tmp
+
+# Working directory for this app
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Copy this application to a new location
 COPY . /app
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+# Build
+CMD ["./gradlew", "build", "docker"]
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
-
-# Define environment variable
-ENV NAME World
-
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+# Run the application from the app build folder
+ENTRYPOINT ["java","-jar","/app/build/libs/gs-spring-boot-0.1.0.jar"]
 ```
 
 Read the comments of the file to understand what each command is doing. 
@@ -40,11 +37,11 @@ Finally, build and run the app:
 # Step 1: Build. Think of the tag as the build version for the Docker Image
 docker build -t apidemo:latest .
 
-# Step 2: Run. We name the Docker Container instance apidemo and run it here. 
-docker run -p 4000:80 apidemo
+# Step 2: Run. Name the Container instance apidemo and run app port 8080 on local 4000. 
+docker run -p 4000:8080 apidemo
 
 # OR run as a detached container instead, which does the same thing. Try both!
-docker run -d -p 4000:80 apidemo
+docker run -d -p 4000:8080 apidemo
 
 # Step 3: Open your browser to localhost:4000 to see your app running.
 

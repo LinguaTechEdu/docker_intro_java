@@ -34,7 +34,7 @@ You should now be able to see your repository online in the Registry! Visit the 
 
 From now on, you can pull and run this repository from the CLI instead of locally:
 
-`docker run -p 4000:80 your_repo_name/apidemo:latest`
+`docker run -p 4000:8080 your_repo_name/apidemo:latest`
 
 ...and that's the very magic of Docker! Sharing is simpler. Your teammates don't need to install or setup anything to run this app. They simply need Docker and then they can run images straight from the repository.
 
